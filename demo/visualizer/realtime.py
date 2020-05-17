@@ -14,7 +14,7 @@ import numpy as np
 import mmwave.dsp as dsp
 import mmwave.clustering as clu
 from mmwave.dataloader import DCA1000
-from demo.visualizer.visualize import ellipse_visualize
+from visualize import ellipse_visualize
 
 import matplotlib.pyplot as plt
 
@@ -68,8 +68,11 @@ if __name__ == '__main__':
     while True:
         # (1) Reading in adc data
         adc_data = dca.read()
+        print(adc_data.shape)
+        print(adc_data)
         frame = dca.organize(adc_data, num_chirps=numChirpsPerFrame, num_rx=numRxAntennas, num_samples=numADCSamples)
-
+        print("frame")
+        print(frame)
         # (2) Range Processing
         from mmwave.dsp.utils import Window
         radar_cube = dsp.range_processing(frame, window_type_1d=Window.BLACKMAN)
@@ -135,13 +138,15 @@ if __name__ == '__main__':
 
 
         azimuthInput = aoa_input[detObj2D['rangeIdx'], :, detObj2D['dopplerIdx']]
-
+        print("azimuthInput")
+        print(azimuthInput.shape)
+        print(azimuthInput)
         x, y, z = dsp.naive_xyz(azimuthInput.T)
         xyzVecN = np.zeros((3, x.shape[0]))
         xyzVecN[0] = x * range_resolution * detObj2D['rangeIdx']
         xyzVecN[1] = y * range_resolution * detObj2D['rangeIdx']
         xyzVecN[2] = z * range_resolution * detObj2D['rangeIdx']
-
+        print(azimuthInput.shape)
         Psi, Theta, Ranges, xyzVec = dsp.beamforming_naive_mixed_xyz(azimuthInput, detObj2D['rangeIdx'],
                                                                      range_resolution, method='Capon')
 
