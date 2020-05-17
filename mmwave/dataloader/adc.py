@@ -170,7 +170,7 @@ class DCA1000:
         self.data_socket.settimeout(timeout)
 
         # Frame buffer
-        ret_frame = np.zeros(UINT16_IN_FRAME, dtype=np.uint16)
+        ret_frame = np.zeros(UINT16_IN_FRAME, dtype=np.int16)
 
         # Wait for start of next frame
         while True:
